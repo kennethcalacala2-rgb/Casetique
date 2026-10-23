@@ -80,12 +80,21 @@
       <div class="order-card">
         <h2>Order your case</h2>
         <form id="order-form" novalidate>
-          <label>Case
-            <select id="f-product" name="product_id" required></select>
-          </label>
-          <label>Phone model
-            <select id="f-model" name="model" required></select>
-          </label>
+          <label for="f-product">Case</label>
+<select id="f-product" name="product_id" required>
+  <option value="">Select a case</option>
+  <option value="1">Blush Glitter</option>
+  <option value="2">Sunflower Bloom</option>
+  <option value="3">Patchwork Pastel</option>
+  <option value="4">Midnight Memory</option>
+</select>
+
+<label for="f-model">Phone model</label>
+<select id="f-model" name="model" required>
+  <option value="">Select your phone model</option>
+  <option value="Android">Android</option>
+  <option value="iOS">iOS</option>
+</select>
           <label>Quantity
             <input type="number" id="f-qty" name="quantity" min="1" max="10" value="1" required>
           </label>
