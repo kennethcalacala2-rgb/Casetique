@@ -1,114 +1,136 @@
-"""Casetique "backend" running in the browser with PyScript.
 
-Holds the catalog, validates orders and signups, and saves them in the
-visitor's browser (localStorage). No server is involved.
-"""
-import json
-import re
+from pyscript import document
+from pyodide.ffi import create_proxy
 
-try:                                   # inside the browser (Pyodide)
-    from js import localStorage
-except ImportError:                    # plain Python, e.g. for testing
-    class _MemoryStorage(dict):
-        def getItem(self, key):
-            return self.get(key)
+# Casetique product list
+products = {
+    "1": {"name": "Blush Glitter", "price": 18.00},
+    "2": {"name": "Sunflower Bloom", "price": 20.00},
+    "3": {"name": "Patchwork Pastel", "price": 16.00},
+    "4": {"name": "Midnight Memory", "price": 22.00},
+}
 
-        def setItem(self, key, value):
-            self[key] = value
+def setup_dropdowns():
+    # Case dropdown
+    product_select = document.getElementById("f-product")
+    product_select.innerHTML = (
+        '<option value="">Select a case</option>'
+    )
 
-    localStorage = _MemoryStorage()
+    for product_id, product in products.items():
+        option = document.createElement("option")
+        option.value = product_id
+        option.textContent = product["name"]
+        product_select.appendChild(option)
 
-PRODUCTS = [
-    {"id": 1, "name": "Pinkish clear", "image": "img/clear.png", "style": "Clear", "price": 19,
-     "color": "#E3C9C4", "tag": "Best seller",
-     "blurb": "Shimmering blush shell with a built-in MagSafe ring and metal camera frame."},
-    {"id": 2, "name": "Sunflower Bloom", "image": "img/floral.png", "style": "Floral", "price": 20.0,
-     "color": "#F0C98B", "tag": "New",
-     "blurb": "Bold hand-painted blooms on a clear back with a black bumper edge."},
-    {"id": 3, "name": "Girly pattern", "image": "img/pattern.png", "style": "Pattern", "price": 16.0,
-     "color": "#B7C4A6", "tag": "",
-     "blurb": "Gingham, ditsy florals and little bows in soft pastel patches."},
-    {"id": 4, "name": "Solid customize", "image": "img/solid.png", "style": "Solid", "price": 22.0,
-     "color": "#7E9471", "tag": "Custom photo",
-     "blurb": "Clear shock-absorbing bumpers around a dark back made for your own photo."},
-]
+    # Phone model dropdown
+    model_select = document.getElementById("f-model")
+    model_select.innerHTML = (
+        '<option value="">Select your phone model</option>'
+        '<option value="Android">Android</option>'
+        '<option value="iOS">iOS</option>'
+    )
 
-MODELS = ["iPhone 15", "iPhone 15 Pro", "iPhone 16", "Galaxy S24", "Galaxy S25", "Pixel 9"]
-EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
-ORDERS_KEY = "casetique_orders"
-SUBS_KEY = "casetique_subscribers"
+def update_total(event=None):
+    product_id = document.getElementById("f-product").value
+    qty_value = document.getElementById("f-qty").value
 
-
-def _load(key):
     try:
-        return json.loads(localStorage.getItem(key) or "[]")
+        quantity = int(qty_value)
     except (ValueError, TypeError):
-        return []
+        quantity = 1
 
+    quantity = max(1, min(quantity, 10))
 
-def _save(key, rows):
+    if product_id in products:
+        total = products[product_id]["price"] * quantity
+    else:
+        total = 0.00
+
+    document.getElementById("total").textContent = (
+        f"${total:.2f}"
+    )
+
+def place_order(event):
+    event.preventDefault()
+
+    product_id = document.getElementById("f-product").value
+    model = document.getElementById("f-model").value
+    qty_value = document.getElementById("f-qty").value
+    name = document.getElementById("f-name").value.strip()
+    email = document.getElementById("f-email").value.strip()
+    message = document.getElementById("order-msg")
+
+    # Validate required fields
+    if not product_id or product_id not in products:
+        message.textContent = "Please select a case."
+        return
+
+    if model not in ("Android", "iOS"):
+        message.textContent = "Please select Android or iOS."
+        return
+
     try:
-        localStorage.setItem(key, json.dumps(rows))
-        return True
-    except Exception:                  # storage blocked or full
-        return False
+        quantity = int(qty_value)
+    except (ValueError, TypeError):
+        message.textContent = "Please enter a valid quantity."
+        return
 
+    if quantity < 1 or quantity > 10:
+        message.textContent = "Quantity must be between 1 and 10."
+        return
 
-def get_product(product_id):
-    return next((p for p in PRODUCTS if p["id"] == product_id), None)
-
-
-def line_total(product_id, quantity):
-    try:
-        product = get_product(int(product_id))
-    except (TypeError, ValueError):
-        product = None
-    try:
-        qty = max(1, min(10, int(quantity)))
-    except (TypeError, ValueError):
-        qty = 1
-    return round(product["price"] * qty, 2) if product else 0.0
-
-
-def create_order(name, email, model, product_id, quantity):
-    """Return (ok, message)."""
-    name, email = str(name).strip(), str(email).strip()
-    try:
-        product_id, quantity = int(product_id), int(quantity)
-    except (TypeError, ValueError):
-        return False, "Choose a case and a quantity."
-    product = get_product(product_id)
     if not name:
-        return False, "Enter your name."
-    if not EMAIL_RE.match(email):
-        return False, "Enter a valid email address."
-    if model not in MODELS:
-        return False, "Choose your phone model."
-    if product is None:
-        return False, "That case is no longer available."
-    if not 1 <= quantity <= 10:
-        return False, "Quantity must be between 1 and 10."
+        message.textContent = "Please enter your name."
+        return
 
-    orders = _load(ORDERS_KEY)
-    orders.append({
-        "id": len(orders) + 1, "name": name, "email": email, "model": model,
-        "product_id": product_id, "quantity": quantity,
-        "total": round(product["price"] * quantity, 2),
-    })
-    if not _save(ORDERS_KEY, orders):
-        return False, "Couldn't save your order in this browser. Check your privacy settings."
-    return True, f"Order #{len(orders)} placed. Total ${orders[-1]['total']:.2f}."
+    if not email or "@" not in email or "." not in email.split("@")[-1]:
+        message.textContent = "Please enter a valid email address."
+        return
 
+    # Calculate order total
+    product = products[product_id]
+    total = product["price"] * quantity
 
-def subscribe(email):
-    """Return (ok, message)."""
-    email = str(email).strip().lower()
-    if not EMAIL_RE.match(email):
-        return False, "Enter a valid email address."
-    subs = _load(SUBS_KEY)
-    if email in subs:
-        return True, "You're already on the list."
-    subs.append(email)
-    if not _save(SUBS_KEY, subs):
-        return False, "Couldn't save your signup in this browser."
-    return True, "You're on the list."
+    # Display confirmation
+    message.textContent = (
+        f"Thank you for your order, {name}! "
+        f"Case: {product['name']} | "
+        f"Phone: {model} | "
+        f"Quantity: {quantity} | "
+        f"Total: ${total:.2f}. "
+        "Your order details have been confirmed on this page."
+    )
+
+    # Update total display
+    document.getElementById("total").textContent = f"${total:.2f}"
+
+def subscribe(event):
+    event.preventDefault()
+
+    email = document.getElementById("news-email").value.strip()
+    message = document.getElementById("news-msg")
+
+    if not email or "@" not in email or "." not in email.split("@")[-1]:
+        message.textContent = "Please enter a valid email address."
+        return
+
+    message.textContent = "Thank you for subscribing to Casetique!"
+
+# Initialize the website
+setup_dropdowns()
+update_total()
+
+# Register event listeners
+document.getElementById("f-product").addEventListener(
+    "change", create_proxy(update_total)
+)
+document.getElementById("f-qty").addEventListener(
+    "input", create_proxy(update_total)
+)
+document.getElementById("order-form").addEventListener(
+    "submit", create_proxy(place_order)
+)
+document.getElementById("news-form").addEventListener(
+    "submit", create_proxy(subscribe)
+)
