@@ -52,7 +52,7 @@ a { color: inherit; }
 .nav nav a { text-decoration: none; font-weight: 500; }
 .logo { font-family: var(--serif); font-size: 1.6rem; text-decoration: none; }
 
-/* Buttons */
+/*Buttons*/
 .btn {
   display: inline-block; border: 0; cursor: pointer;
   background: var(--moss); color: var(--cream);
