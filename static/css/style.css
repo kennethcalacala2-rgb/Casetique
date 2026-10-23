@@ -40,7 +40,7 @@ a { color: inherit; }
 
 :focus-visible { outline: 3px solid var(--sage-deep); outline-offset: 3px; border-radius: 6px; }
 
-/* Nav */
+
 .nav {
   position: sticky; top: 0; z-index: 10;
   display: flex; justify-content: space-between; align-items: center;
