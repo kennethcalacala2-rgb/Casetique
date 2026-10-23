@@ -5,7 +5,7 @@ from pyscript import document, when
 
 import store
 
-state = {"selected": store.PRODUCTS[0]["id"], "filter": None}  # filter None = all cases
+state = {"selected": store.PRODUCTS[0]["id"], "filter": None}
 
 
 def q(selector):
@@ -126,7 +126,6 @@ def on_subscribe(event):
         q("#news-form").reset()
 
 
-# Initial render
 q("#f-product").innerHTML = "".join(
     f'<option value="{p["id"]}">{escape(p["name"])} ({money(p["price"])})</option>'
     for p in store.PRODUCTS
