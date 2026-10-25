@@ -1,57 +1,20 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Casetique | Phone cases with a boutique touch</title>
-  <meta name="description" content="Stylish, durable, affordable phone cases in cream and sage.">
+  <title>Casetique | Luxury Phone Cases</title>
+  <meta name="description" content="Discover stylish, durable phone cases with a luxurious boutique touch from Casetique.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
   <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="static/css/style.css">
   <link rel="stylesheet" href="static/css/fixes.css">
-
-  <style>
-    /* Casetique Logo */
-    .logo {
-      display: inline-flex;
-      align-items: center;
-      text-decoration: none;
-      flex-shrink: 0;
-    }
-
-    .logo img {
-      display: block;
-      width: 150px;
-      max-width: 100%;
-      height: auto;
-      object-fit: contain;
-    }
-
-    .nav .logo img {
-      width: 130px;
-      max-height: 65px;
-    }
-
-    .footer .logo img {
-      width: 165px;
-      max-height: 85px;
-    }
-
-    @media (max-width: 600px) {
-      .nav .logo img {
-        width: 100px;
-      }
-
-      .footer .logo img {
-        width: 140px;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="static/css/branding.css">
 
   <script type="module" src="https://pyscript.net/releases/2025.8.1/core.js"></script>
 </head>
@@ -65,131 +28,194 @@
 
   <div class="bg-veil" aria-hidden="true"></div>
 
-  <!-- Navigation -->
   <header class="nav">
+
     <a class="logo" href="#top" aria-label="Casetique home">
-      <img src="static/img/casetique.jpg" alt="Casetique Logo">
+      <img
+        src="static/img/casetique.png"
+        alt="Casetique gold emblem and luxury brand logo"
+      >
     </a>
 
-    <nav aria-label="Main">
+    <nav aria-label="Main navigation">
       <a href="#shop">Shop</a>
       <a href="#why">Why Casetique</a>
       <a href="#order" class="btn btn-small">Order</a>
     </nav>
+
   </header>
 
   <main id="top">
 
-    <!-- Hero Section -->
     <section class="hero">
 
       <div class="hero-copy">
+
         <h1>Protection that looks like you chose it.</h1>
 
         <p>
-          Slim, drop-tested phone cases in soft cream and sage,
-          made to be noticed for the right reasons.
+          Slim, stylish phone cases with a luxurious boutique touch.
+          Designed to complement your style and protect your everyday essentials.
         </p>
 
         <div class="actions">
           <a href="#shop" class="btn">Shop cases</a>
           <a href="#why" class="btn btn-ghost">Why Casetique</a>
         </div>
+
       </div>
 
-      <div class="phone-stage" aria-label="Case preview">
-        <img id="phone-img" src="static/img/clear.png" alt="Selected phone case">
+      <div class="phone-stage" aria-label="Phone case preview">
+        <img
+          id="phone-img"
+          src="static/img/clear.png"
+          alt="Selected phone case"
+        >
+
         <p id="phone-label" class="phone-label">Sage Garden</p>
       </div>
 
     </section>
 
-    <!-- Shop Section -->
     <section id="shop" class="section">
 
       <div class="section-head">
-        <h2>Pick a case</h2>
-        <div id="filters" class="filters" role="group" aria-label="Filter by case"></div>
+
+        <h2>Discover Your Style</h2>
+
+        <div
+          id="filters"
+          class="filters"
+          role="group"
+          aria-label="Filter by case"
+        ></div>
+
       </div>
 
       <div id="grid" class="grid" aria-live="polite">
 
         <button type="button" class="card is-selected" data-id="1">
+
           <span class="badge">Best seller</span>
+
           <div class="swatch" style="background:#E3C9C440">
             <img src="static/img/clear.png" alt="Blush Glitter phone case">
           </div>
+
           <h3>Blush Glitter</h3>
-          <p class="meta">Shimmering blush shell with a built-in MagSafe ring and metal camera frame.</p>
+
+          <p class="meta">
+            Shimmering blush shell with a built-in MagSafe ring
+            and metal camera frame.
+          </p>
+
           <span class="price">$18.00</span>
+
         </button>
 
         <button type="button" class="card" data-id="2">
+
           <span class="badge">New</span>
+
           <div class="swatch" style="background:#F0C98B40">
             <img src="static/img/floral.png" alt="Sunflower Bloom phone case">
           </div>
+
           <h3>Sunflower Bloom</h3>
-          <p class="meta">Bold hand-painted blooms on a clear back with a black bumper edge.</p>
+
+          <p class="meta">
+            Bold hand-painted blooms on a clear back
+            with a black bumper edge.
+          </p>
+
           <span class="price">$20.00</span>
+
         </button>
 
         <button type="button" class="card" data-id="3">
+
           <div class="swatch" style="background:#B7C4A640">
             <img src="static/img/pattern.png" alt="Patchwork Pastel phone case">
           </div>
+
           <h3>Patchwork Pastel</h3>
-          <p class="meta">Gingham, ditsy florals and little bows in soft pastel patches.</p>
+
+          <p class="meta">
+            Gingham, ditsy florals and little bows
+            in soft pastel patches.
+          </p>
+
           <span class="price">$16.00</span>
+
         </button>
 
         <button type="button" class="card" data-id="4">
+
           <span class="badge">Custom photo</span>
+
           <div class="swatch" style="background:#7E947140">
             <img src="static/img/solid.png" alt="Midnight Memory phone case">
           </div>
+
           <h3>Midnight Memory</h3>
-          <p class="meta">Clear shock-absorbing bumpers around a dark back made for your own photo.</p>
+
+          <p class="meta">
+            Clear shock-absorbing bumpers around a dark back
+            made for your own photo.
+          </p>
+
           <span class="price">$22.00</span>
+
         </button>
 
       </div>
+
     </section>
 
-    <!-- Why Casetique Section -->
     <section id="why" class="section values">
 
-      <h2>Made to be used every day</h2>
+      <h2>Made to Be Used Every Day</h2>
 
       <div class="value-list">
 
         <article>
           <h3>Stylish</h3>
-          <p>Every print is drawn in-house in a restrained cream and sage palette.</p>
+          <p>
+            Thoughtfully selected designs that bring personality
+            and elegance to your everyday look.
+          </p>
         </article>
 
         <article>
           <h3>Durable</h3>
-          <p>Raised bezels and shock-absorbing corners protect screen and camera.</p>
+          <p>
+            Designed with protective edges and shock-absorbing
+            corners to help protect your phone.
+          </p>
         </article>
 
         <article>
           <h3>Affordable</h3>
-          <p>Boutique design at $14 to $18, so you can swap cases with your mood.</p>
+          <p>
+            Boutique-inspired designs at accessible prices,
+            so you can express your style every day.
+          </p>
         </article>
 
       </div>
+
     </section>
 
-    <!-- Order Section -->
     <section id="order" class="section order">
 
       <div class="order-card">
-        <h2>Order your case</h2>
+
+        <h2>Make It Yours</h2>
 
         <form id="order-form" novalidate>
 
-          <label for="f-product">Case</label>
+          <label for="f-product">Choose your case</label>
+
           <select id="f-product" name="product_id" required>
             <option value="">Select a case</option>
             <option value="1">Blush Glitter</option>
@@ -199,6 +225,7 @@
           </select>
 
           <label for="f-model">Phone model</label>
+
           <select id="f-model" name="model" required>
             <option value="">Select your phone model</option>
             <option value="Android">Android</option>
@@ -206,13 +233,36 @@
           </select>
 
           <label for="f-qty">Quantity</label>
-          <input type="number" id="f-qty" name="quantity" min="1" max="10" value="1" required>
 
-          <label for="f-name">Name</label>
-          <input type="text" id="f-name" name="name" autocomplete="name" required>
+          <input
+            type="number"
+            id="f-qty"
+            name="quantity"
+            min="1"
+            max="10"
+            value="1"
+            required
+          >
 
-          <label for="f-email">Email</label>
-          <input type="email" id="f-email" name="email" autocomplete="email" required>
+          <label for="f-name">Full name</label>
+
+          <input
+            type="text"
+            id="f-name"
+            name="name"
+            autocomplete="name"
+            required
+          >
+
+          <label for="f-email">Email address</label>
+
+          <input
+            type="email"
+            id="f-email"
+            name="email"
+            autocomplete="email"
+            required
+          >
 
           <div class="total-row">
             <span>Total</span>
@@ -220,32 +270,47 @@
           </div>
 
           <button class="btn" type="submit">Place order</button>
+
           <p id="order-msg" class="msg" role="status"></p>
 
         </form>
+
       </div>
+
     </section>
 
   </main>
 
-  <!-- Footer -->
   <footer class="footer">
 
     <div>
-      <a class="logo" href="#top" aria-label="Casetique home">
-        <img src="static/img/casetique.jpg" alt="Casetique Logo">
+
+      <a class="logo" href="#top" aria-label="Return to Casetique home">
+        <img
+          src="static/img/casetique.png"
+          alt="Casetique gold emblem and luxury brand logo"
+        >
       </a>
 
-      <p>Stylish, durable, affordable phone cases.</p>
+      <p>Thoughtfully designed phone cases. Elegance in every detail.</p>
+
     </div>
 
     <form id="news-form" novalidate>
 
-      <label for="news-email">Get first look at new prints</label>
+      <label for="news-email">Be the first to discover new designs</label>
 
       <div class="news-row">
-        <input type="email" id="news-email" placeholder="you@example.com" required>
+
+        <input
+          type="email"
+          id="news-email"
+          placeholder="you@example.com"
+          required
+        >
+
         <button class="btn btn-small" type="submit">Subscribe</button>
+
       </div>
 
       <p id="news-msg" class="msg" role="status"></p>
@@ -254,9 +319,7 @@
 
   </footer>
 
-  <!-- PyScript Application -->
   <script type="py" src="./main.py" config="./pyscript.toml"></script>
 
 </body>
 </html>
-```
